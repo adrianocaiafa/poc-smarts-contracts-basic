@@ -1,0 +1,40 @@
+# Remix
+.deps/
+
+# Logs
+logs/
+*.log
+
+# Node
+node_modules/
+
+# SO / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backups
+*.backup
+*.orig
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Cache / ferramentas
+.cache/
+.eslintcache
+coverage/
+coverage.json
+
+# Caso venha a usar Hardhat / Foundry / TypeChain no futuro
+artifacts/
+cache/
+out/
+typechain/
+typechain-types/
+broadcast/
