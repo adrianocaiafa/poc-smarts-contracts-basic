@@ -115,4 +115,32 @@ contract WizardLevelRanking {
 
         emit SpellCast(msg.sender, target, manaToSpend, gainedXP, level[msg.sender]);
     }
+
+    // ======== LEADERBOARD (VIEW) ========
+
+    /// @notice Returns wizards sorted by XP (desc)
+    function getLeaderboard()
+        external
+        view
+        returns (address[] memory users, uint256[] memory scores)
+    {
+        uint256 len = wizards.length;
+        users = new address[](len);
+        scores = new uint256[](len);
+
+        for (uint256 i = 0; i < len; i++) {
+            users[i] = wizards[i];
+            scores[i] = xp[wizards[i]];
+        }
+
+        // simple bubble sort in memory (READ-ONLY)
+        for (uint256 i = 0; i < len; i++) {
+            for (uint256 j = 0; j < len - 1; j++) {
+                if (scores[j] < scores[j + 1]) {
+                    (scores[j], scores[j + 1]) = (scores[j + 1], scores[j]);
+                    (users[j], users[j + 1]) = (users[j + 1], users[j]);
+                }
+            }
+        }
+    }
 }
