@@ -83,4 +83,36 @@ contract WizardLevelRanking {
         mana[msg.sender] += amount;
         emit ManaGained(msg.sender, amount, mana[msg.sender]);
     }
+
+    /// @notice Cast a spell on another wizard: spend mana, gain XP
+    /// @dev Very simple: more mana spent = more XP gained
+    function castSpell(address target, uint256 manaToSpend) external {
+        require(target != address(0), "Invalid target");
+        require(target != msg.sender, "Cannot cast on yourself");
+        require(manaToSpend > 0, "Mana must be > 0");
+        require(mana[msg.sender] >= manaToSpend, "Not enough mana");
+
+        _registerWizard(msg.sender);
+        _registerWizard(target);
+
+        // spend mana
+        mana[msg.sender] -= manaToSpend;
+
+        // gain XP proportional to mana spent
+        uint256 gainedXP = manaToSpend; // 1:1 for simplicity
+        xp[msg.sender] += gainedXP;
+        spellsCast[msg.sender] += 1;
+
+        // level calc
+        uint256 newLevel = xp[msg.sender] / XP_PER_LEVEL;
+        if (newLevel > level[msg.sender]) {
+            level[msg.sender] = newLevel;
+            uint256 manaBonus = (newLevel * MANA_PER_LEVEL);
+            mana[msg.sender] += manaBonus;
+            emit LevelUp(msg.sender, newLevel);
+            emit ManaGained(msg.sender, manaBonus, mana[msg.sender]);
+        }
+
+        emit SpellCast(msg.sender, target, manaToSpend, gainedXP, level[msg.sender]);
+    }
 }
