@@ -48,4 +48,29 @@ contract WizardLevelRanking {
         }
         interactionsCount[_wizard] += 1;
     }
+
+    // ======== WRITE FUNCTIONS ========
+
+    /// @notice Gain raw XP (e.g. off-chain quest, quest completion, etc.)
+    function gainXP(uint256 amount) external {
+        require(amount > 0, "Amount must be > 0");
+
+        _registerWizard(msg.sender);
+
+        xp[msg.sender] += amount;
+
+        // compute new level
+        uint256 newLevel = xp[msg.sender] / XP_PER_LEVEL;
+
+        if (newLevel > level[msg.sender]) {
+            level[msg.sender] = newLevel;
+            // bonus mana per level up
+            uint256 manaBonus = (newLevel * MANA_PER_LEVEL);
+            mana[msg.sender] += manaBonus;
+            emit LevelUp(msg.sender, newLevel);
+            emit ManaGained(msg.sender, manaBonus, mana[msg.sender]);
+        }
+
+        emit XPGained(msg.sender, amount, xp[msg.sender], level[msg.sender]);
+    }
 }
