@@ -22,4 +22,19 @@ contract WizardLevelRanking {
     uint256 public constant XP_PER_LEVEL   = 100;  // 100 XP per level
     uint256 public constant MANA_PER_LEVEL = 10;   // bonus mana per level up
     uint256 public constant BASE_SPELL_COST = 5;   // default mana cost for spells
+
+    // ======== EVENTS ========
+
+    event WizardRegistered(address indexed wizard);
+    event XPGained(address indexed wizard, uint256 amount, uint256 newXP, uint256 newLevel);
+    event ManaGained(address indexed wizard, uint256 amount, uint256 newMana);
+    event LevelUp(address indexed wizard, uint256 newLevel);
+    event SpellCast(
+        address indexed from,
+        address indexed to,
+        uint256 manaSpent,
+        uint256 xpGained,
+        uint256 newLevel
+    );
+
 }
