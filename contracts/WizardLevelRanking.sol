@@ -73,4 +73,14 @@ contract WizardLevelRanking {
 
         emit XPGained(msg.sender, amount, xp[msg.sender], level[msg.sender]);
     }
+
+     /// @notice Meditate to gain mana (pure flavor, but on-chain)
+    function meditate(uint256 amount) external {
+        require(amount > 0, "Amount must be > 0");
+
+        _registerWizard(msg.sender);
+
+        mana[msg.sender] += amount;
+        emit ManaGained(msg.sender, amount, mana[msg.sender]);
+    }
 }
