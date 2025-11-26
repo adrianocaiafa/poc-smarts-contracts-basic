@@ -143,4 +143,26 @@ contract WizardLevelRanking {
             }
         }
     }
+
+    // ======== HELPER READ FUNCTIONS ========
+
+    function myXP() external view returns (uint256) {
+        return xp[msg.sender];
+    }
+
+    function myLevel() external view returns (uint256) {
+        return level[msg.sender];
+    }
+
+    function myMana() external view returns (uint256) {
+        return mana[msg.sender];
+    }
+
+    function mySpellsCast() external view returns (uint256) {
+        return spellsCast[msg.sender];
+    }
+
+    function myInteractions() external view returns (uint256) {
+        return interactionsCount[msg.sender];
+    }
 }
