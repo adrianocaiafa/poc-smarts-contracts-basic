@@ -37,4 +37,15 @@ contract WizardLevelRanking {
         uint256 newLevel
     );
 
+    // ======== CORE INTERNAL REGISTRATION ========
+
+    function _registerWizard(address _wizard) internal {
+        if (!hasInteracted[_wizard]) {
+            hasInteracted[_wizard] = true;
+            totalUniqueWizards += 1;
+            wizards.push(_wizard);
+            emit WizardRegistered(_wizard);
+        }
+        interactionsCount[_wizard] += 1;
+    }
 }
