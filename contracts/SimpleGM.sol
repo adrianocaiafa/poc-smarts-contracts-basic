@@ -34,7 +34,7 @@ contract SimpleGM {
         uint256 bestStreak
     );
 
-/// @notice Dá um "GM" on-chain (no máximo 1 vez por dia por address)
+    /// @notice Dá um "GM" on-chain (no máximo 1 vez por dia por address)
     function gm() external {
         uint256 today = block.timestamp / 1 days;
 
@@ -77,5 +77,22 @@ contract SimpleGM {
             currentStreak[msg.sender],
             bestStreak[msg.sender]
         );
+    }
+
+    // @notice Retorna um resumo dos seus dados de GM
+    function myGMData()
+        external
+        view
+        returns (
+            uint256 _gmCount,
+            uint256 _currentStreak,
+            uint256 _bestStreak,
+            uint256 _lastGMTimestamp
+        )
+    {
+        _gmCount = gmCount[msg.sender];
+        _currentStreak = currentStreak[msg.sender];
+        _bestStreak = bestStreak[msg.sender];
+        _lastGMTimestamp = lastGMDay[msg.sender] * 1 days;
     }
 }
