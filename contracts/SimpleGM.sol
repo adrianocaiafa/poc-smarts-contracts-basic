@@ -95,4 +95,15 @@ contract SimpleGM {
         _bestStreak = bestStreak[msg.sender];
         _lastGMTimestamp = lastGMDay[msg.sender] * 1 days;
     }
+
+   /// @notice Retorna algumas métricas globais básicas
+    function globalStats()
+        external
+        view
+        returns (
+            uint256 _totalUniqueUsers
+        )
+    {
+        _totalUniqueUsers = totalUniqueUsers;
+    }
 }
