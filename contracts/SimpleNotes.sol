@@ -13,6 +13,9 @@ contract SimpleNotes {
 
     Note[] public notes; // notes[0] pode ficar "vazio" se quiser começar de 1, mas vamos usar direto
     mapping(address => uint256[]) public noteIdsByOwner;
+    
+    event NoteCreated(uint256 indexed id, address indexed owner, string text);
+    event NoteDeleted(uint256 indexed id);
 
     function addNote(string calldata _text) external {
         uint256 id = notes.length;
@@ -48,6 +51,6 @@ contract SimpleNotes {
         return result;
     }
 
-    event NoteCreated(uint256 indexed id, address indexed owner, string text);
+    
 
 }
