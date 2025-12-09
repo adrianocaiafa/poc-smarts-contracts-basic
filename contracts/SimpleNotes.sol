@@ -17,12 +17,13 @@ contract SimpleNotes {
     mapping(uint256 => uint256) public likes;
     mapping(uint256 => mapping(address => bool)) public hasLiked;
     mapping(address => uint256) public pinnedNoteId;
-    
+
     event NoteCreated(uint256 indexed id, address indexed owner, string text);
     event NoteDeleted(uint256 indexed id);
     event NoteLiked(uint256 indexed id, address indexed user, uint256 totalLikes);
     event NotePinned(address indexed user, uint256 indexed noteId);
-
+    event TagAdded(uint256 indexed id, string tag);
+    
     function addNote(string calldata _text) external {
         uint256 id = notes.length;
 
