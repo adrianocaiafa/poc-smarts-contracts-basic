@@ -45,4 +45,7 @@ contract SimpleNotes {
 
         return result;
     }
+
+    event NoteCreated(uint256 indexed id, address indexed owner, string text);
+    
 }
