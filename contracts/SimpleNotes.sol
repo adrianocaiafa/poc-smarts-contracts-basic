@@ -124,4 +124,25 @@ contract SimpleNotes {
 
         return result;
     }
+
+    address public owner;
+    bool public paused;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    modifier whenNotPaused() {
+        require(!paused, "Paused");
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function setPaused(bool _paused) external onlyOwner {
+        paused = _paused;
+    }
 }
