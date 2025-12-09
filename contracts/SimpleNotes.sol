@@ -75,8 +75,7 @@ contract SimpleNotes {
                 text: _text,
                 createdAt: block.timestamp,
                 updatedAt: block.timestamp,
-                deleted: false,
-                tags: new string // FIX: cria array vazio corretamente
+                deleted: false
             })
         );
 
