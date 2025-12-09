@@ -9,6 +9,7 @@ contract SimpleNotes {
         uint256 createdAt;
         uint256 updatedAt;
         bool deleted;
+        string[] tags;
     }
 
     Note[] public notes;
@@ -23,7 +24,7 @@ contract SimpleNotes {
     event NoteLiked(uint256 indexed id, address indexed user, uint256 totalLikes);
     event NotePinned(address indexed user, uint256 indexed noteId);
     event TagAdded(uint256 indexed id, string tag);
-    
+
     function addNote(string calldata _text) external {
         uint256 id = notes.length;
 
@@ -97,5 +98,15 @@ contract SimpleNotes {
         pinnedNoteId[msg.sender] = id;
 
         emit NotePinned(msg.sender, id);
+    }
+
+    function addTag(uint256 id, string calldata tag) external {
+        Note storage note = notes[id];
+        require(note.owner == msg.sender, "Not the owner");
+        require(!note.deleted, "Note deleted");
+
+        note.tags.push(tag);
+
+        emit TagAdded(id, tag);
     }
 }
