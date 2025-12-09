@@ -117,16 +117,6 @@ contract SimpleNotes {
         emit NotePinned(msg.sender, id);
     }
 
-    function addTag(uint256 id, string calldata tag) external whenNotPaused {
-        Note storage note = notes[id];
-        require(note.owner == msg.sender, "Not the owner");
-        require(!note.deleted, "Note deleted");
-
-        note.tags.push(tag);
-
-        emit TagAdded(id, tag);
-    }
-
     // -------------------------------------------------------------------------
     // READ FUNCTIONS
     // -------------------------------------------------------------------------
