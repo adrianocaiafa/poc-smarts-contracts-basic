@@ -38,7 +38,6 @@ contract SimpleNotes {
     event NoteDeleted(uint256 indexed id);
     event NoteLiked(uint256 indexed id, address indexed user, uint256 totalLikes);
     event NotePinned(address indexed user, uint256 indexed noteId);
-    event TagAdded(uint256 indexed id, string tag);
 
     // -------------------------------------------------------------------------
     // MODIFIERS
