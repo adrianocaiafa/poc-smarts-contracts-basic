@@ -46,7 +46,7 @@ contract SimpleNotes {
 
         emit NoteDeleted(id);
     }
-    
+
     function getNote(uint256 id) external view returns (Note memory) {
         return notes[id];
     }
@@ -62,6 +62,13 @@ contract SimpleNotes {
         return result;
     }
 
+    function totalNotes() external view returns (uint256) {
+        return notes.length;
+    }
+
+    function myNotesCount() external view returns (uint256) {
+        return noteIdsByOwner[msg.sender].length;
+    }
     
 
 }
