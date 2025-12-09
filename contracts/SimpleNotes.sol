@@ -109,4 +109,19 @@ contract SimpleNotes {
 
         emit TagAdded(id, tag);
     }
+
+    function getNotesByOwner(address owner)
+        external
+        view
+        returns (Note[] memory)
+    {
+        uint256[] memory ids = noteIdsByOwner[owner];
+        Note[] memory result = new Note[](ids.length);
+
+        for (uint256 i = 0; i < ids.length; i++) {
+            result[i] = notes[ids[i]];
+        }
+
+        return result;
+    }
 }
