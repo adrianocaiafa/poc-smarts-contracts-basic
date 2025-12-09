@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/// @title SimpleNotes - basic on-chain note storage
-/// @notice First minimal version with a single global note
 contract SimpleNotes {
-    string public note;
+    string[] public notes;
 
-    function setNote(string calldata _note) external {
-        note = _note;
+    function addNote(string calldata _note) external {
+        notes.push(_note);
+    }
+
+    function getNote(uint256 index) external view returns (string memory) {
+        return notes[index];
+    }
+
+    function notesCount() external view returns (uint256) {
+        return notes.length;
     }
 }
