@@ -29,6 +29,8 @@ contract SimpleNotes {
         );
 
         noteIdsByOwner[msg.sender].push(id);
+
+        emit NoteCreated(id, msg.sender, _text);
     }
 
     function getNote(uint256 id) external view returns (Note memory) {
@@ -47,5 +49,5 @@ contract SimpleNotes {
     }
 
     event NoteCreated(uint256 indexed id, address indexed owner, string text);
-    
+
 }
