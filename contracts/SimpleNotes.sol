@@ -26,7 +26,6 @@ contract SimpleNotes {
     mapping(uint256 => mapping(address => bool)) public hasLiked;
     mapping(address => uint256) public pinnedNoteId;
 
-    // Pause control
     address public owner;
     bool public paused;
 
@@ -84,44 +83,44 @@ contract SimpleNotes {
         emit NoteCreated(id, msg.sender, _text);
     }
 
-    function deleteNote(uint256 id) external whenNotPaused {
-        Note storage note = notes[id];
+    function deleteNote(uint256 _id) external whenNotPaused {
+        Note storage note = notes[_id];
         require(note.owner == msg.sender, "Not the owner");
         require(!note.deleted, "Already deleted");
 
         note.deleted = true;
         note.updatedAt = block.timestamp;
 
-        emit NoteDeleted(id);
+        emit NoteDeleted(_id);
     }
 
-    function likeNote(uint256 id) external whenNotPaused {
-        Note storage note = notes[id];
+    function likeNote(uint256 _id) external whenNotPaused {
+        Note storage note = notes[_id];
         require(!note.deleted, "Note deleted");
-        require(!hasLiked[id][msg.sender], "Already liked");
+        require(!hasLiked[_id][msg.sender], "Already liked");
 
-        hasLiked[id][msg.sender] = true;
-        likes[id] += 1;
+        hasLiked[_id][msg.sender] = true;
+        likes[_id] += 1;
 
-        emit NoteLiked(id, msg.sender, likes[id]);
+        emit NoteLiked(_id, msg.sender, likes[_id]);
     }
 
-    function pinMyNote(uint256 id) external whenNotPaused {
-        Note storage note = notes[id];
+    function pinMyNote(uint256 _id) external whenNotPaused {
+        Note storage note = notes[_id];
         require(note.owner == msg.sender, "Not the owner");
         require(!note.deleted, "Note deleted");
 
-        pinnedNoteId[msg.sender] = id;
+        pinnedNoteId[msg.sender] = _id;
 
-        emit NotePinned(msg.sender, id);
+        emit NotePinned(msg.sender, _id);
     }
 
     // -------------------------------------------------------------------------
     // READ FUNCTIONS
     // -------------------------------------------------------------------------
 
-    function getNote(uint256 id) external view returns (Note memory) {
-        return notes[id];
+    function getNote(uint256 _id) external view returns (Note memory) {
+        return notes[_id];
     }
 
     function getMyNotes() external view returns (Note[] memory) {
