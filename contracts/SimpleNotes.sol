@@ -11,14 +11,18 @@ contract SimpleNotes {
         bool deleted;
     }
 
-    Note[] public notes; // notes[0] pode ficar "vazio" se quiser começar de 1, mas vamos usar direto
+    Note[] public notes;
+
     mapping(address => uint256[]) public noteIdsByOwner;
+    mapping(uint256 => uint256) public likes;
+    mapping(uint256 => mapping(address => bool)) public hasLiked;
+    mapping(address => uint256) public pinnedNoteId;
     
     event NoteCreated(uint256 indexed id, address indexed owner, string text);
     event NoteDeleted(uint256 indexed id);
     event NoteLiked(uint256 indexed id, address indexed user, uint256 totalLikes);
     event NotePinned(address indexed user, uint256 indexed noteId);
-    
+
     function addNote(string calldata _text) external {
         uint256 id = notes.length;
 
@@ -72,8 +76,6 @@ contract SimpleNotes {
         return noteIdsByOwner[msg.sender].length;
     }
     
-    mapping(uint256 => uint256) public likes;
-    mapping(uint256 => mapping(address => bool)) public hasLiked;
 
     function likeNote(uint256 id) external {
         Note storage note = notes[id];
@@ -84,5 +86,15 @@ contract SimpleNotes {
         likes[id] += 1;
 
         emit NoteLiked(id, msg.sender, likes[id]);
+    }
+
+    function pinMyNote(uint256 id) external {
+        Note storage note = notes[id];
+        require(note.owner == msg.sender, "Not the owner");
+        require(!note.deleted, "Note deleted");
+
+        pinnedNoteId[msg.sender] = id;
+
+        emit NotePinned(msg.sender, id);
     }
 }
