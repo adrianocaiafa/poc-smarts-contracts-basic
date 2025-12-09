@@ -17,7 +17,7 @@ contract SimpleNotes {
     event NoteCreated(uint256 indexed id, address indexed owner, string text);
     event NoteDeleted(uint256 indexed id);
     event NoteLiked(uint256 indexed id, address indexed user, uint256 totalLikes);
-    
+
     function addNote(string calldata _text) external {
         uint256 id = notes.length;
 
@@ -71,5 +71,17 @@ contract SimpleNotes {
         return noteIdsByOwner[msg.sender].length;
     }
     
+    mapping(uint256 => uint256) public likes;
+    mapping(uint256 => mapping(address => bool)) public hasLiked;
 
+    function likeNote(uint256 id) external {
+        Note storage note = notes[id];
+        require(!note.deleted, "Note deleted");
+        require(!hasLiked[id][msg.sender], "Already liked");
+
+        hasLiked[id][msg.sender] = true;
+        likes[id] += 1;
+
+        emit NoteLiked(id, msg.sender, likes[id]);
+    }
 }
