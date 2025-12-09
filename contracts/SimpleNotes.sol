@@ -36,6 +36,17 @@ contract SimpleNotes {
         emit NoteCreated(id, msg.sender, _text);
     }
 
+    function deleteNote(uint256 id) external {
+        Note storage note = notes[id];
+        require(note.owner == msg.sender, "Not the owner");
+        require(!note.deleted, "Already deleted");
+
+        note.deleted = true;
+        note.updatedAt = block.timestamp;
+
+        emit NoteDeleted(id);
+    }
+    
     function getNote(uint256 id) external view returns (Note memory) {
         return notes[id];
     }
