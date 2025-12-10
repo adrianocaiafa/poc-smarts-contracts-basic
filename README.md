@@ -51,3 +51,21 @@ Admin:
 owner – contract owner
 
 paused – simple switch to pause mutating functions
+
+Main Functions
+Write
+
+addNote(string _text)
+Creates a new note owned by msg.sender.
+
+deleteNote(uint256 _id)
+Marks a note as deleted (only by its owner).
+
+likeNote(uint256 _id)
+Registers a like from msg.sender for the given note (once per address).
+
+pinMyNote(uint256 _id)
+Pins a note for the caller.
+
+setPaused(bool _paused)
+Owner-only; pauses or unpauses mutating operations.
