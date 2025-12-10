@@ -81,3 +81,15 @@ getNotesByOwner(address _owner) -> Note[]
 totalNotes() -> uint256
 
 myNotesCount() -> uint256
+
+Tooling & Setup (suggested)
+
+While the contract was initially developed with Remix, you can also use Hardhat
+for local testing and scripting:
+
+npm init -y
+npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox
+npx hardhat init
+
+
+Place SimpleNotes.sol under contracts/, then write tests under test/.
