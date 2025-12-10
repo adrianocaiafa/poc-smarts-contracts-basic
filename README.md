@@ -1,30 +1,32 @@
 # SimpleNotes
 
 `SimpleNotes` is a minimal on-chain notes contract written in Solidity.  
-It allows users to create, like, pin, and soft-delete notes, while keeping a simple
-and gas-conscious data model.
+It allows users to create, like, pin, and soft-delete notes while keeping a simple
+and gas-efficient data model.
 
-The goal of this project is to serve as a clean, educational PoC (proof of concept)
-for basic CRUD-style patterns on EVM smart contracts, and to be a good sandbox for
-iterative improvements (archiving, visibility, gas optimizations, tests, etc.).
+This project serves as a clean, educational PoC (proof of concept)
+for basic CRUD-style patterns on EVM smart contracts and as a sandbox for gradual
+feature improvements (archiving, visibility, gas optimizations, tests, etc.).
 
 ---
 
-## Features
+## ✨ Features
 
 - Create notes associated with the caller (`msg.sender`)
-- Soft delete notes (flag as deleted instead of removing from storage)
+- Soft delete notes (mark as deleted instead of removing from storage)
 - Like notes once per address
 - Pin a single note per user
 - List:
-  - A single note by id
-  - All notes created by the caller
+  - A single note by ID  
+  - All notes created by the caller  
   - All notes created by a specific owner
 - Pause/unpause mutating operations (owner-only)
 
 ---
 
-## Contract Overview
+## 📜 Contract Overview
+
+### Struct
 
 ```solidity
 struct Note {
@@ -35,78 +37,102 @@ struct Note {
     uint256 updatedAt;
     bool deleted;
 }
+```
 
-Key mappings:
+### Key mappings
 
-noteIdsByOwner[address] -> uint256[]
+```
+noteIdsByOwner[address]      -> uint256[]
+likes[noteId]                -> uint256
+hasLiked[noteId][address]    -> bool
+pinnedNoteId[address]        -> noteId
+```
 
-likes[noteId] -> uint256
+### Admin fields
 
-hasLiked[noteId][address] -> bool
+```
+owner   – contract owner
+paused  – simple switch to pause mutating functions
+```
 
-pinnedNoteId[address] -> noteId
+---
 
-Admin:
+## 🛠 Main Functions
 
-owner – contract owner
+### Write functions
 
-paused – simple switch to pause mutating functions
+#### `addNote(string _text)`
+Creates a new note owned by `msg.sender`.
 
-Main Functions
-Write
+#### `deleteNote(uint256 _id)`
+Marks a note as deleted (only removable by its owner).
 
-addNote(string _text)
-Creates a new note owned by msg.sender.
+#### `likeNote(uint256 _id)`
+Registers a like from `msg.sender`. One like per address.
 
-deleteNote(uint256 _id)
-Marks a note as deleted (only by its owner).
+#### `pinMyNote(uint256 _id)`
+Pins a note so the caller can mark a preferred/important note.
 
-likeNote(uint256 _id)
-Registers a like from msg.sender for the given note (once per address).
-
-pinMyNote(uint256 _id)
-Pins a note for the caller.
-
-setPaused(bool _paused)
+#### `setPaused(bool _paused)`  
 Owner-only; pauses or unpauses mutating operations.
 
-Read
+---
 
-getNote(uint256 _id) -> Note
+### Read functions
 
-getMyNotes() -> Note[]
+#### `getNote(uint256 _id) -> Note`
+Retrieves full note data.
 
-getNotesByOwner(address _owner) -> Note[]
+#### `getMyNotes() -> Note[]`
+Returns all notes created by the caller.
 
-totalNotes() -> uint256
+#### `getNotesByOwner(address _owner) -> Note[]`
+Returns all notes created by a specific owner.
 
-myNotesCount() -> uint256
+#### `totalNotes() -> uint256`
+Total count of notes stored.
 
-Tooling & Setup (suggested)
+#### `myNotesCount() -> uint256`
+How many notes the caller has created.
 
-While the contract was initially developed with Remix, you can also use Hardhat
-for local testing and scripting:
+---
 
+## 🔧 Tooling & Setup (Hardhat Recommended)
+
+Although the contract can be developed fully in Remix, using **Hardhat** provides
+a better workflow for testing, compiling, and scripting.
+
+### Install Hardhat
+
+```bash
 npm init -y
 npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox
 npx hardhat init
+```
 
+Move your contract into:
 
-Place SimpleNotes.sol under contracts/, then write tests under test/.
+```
+contracts/SimpleNotes.sol
+```
 
-Future Improvements
+Then create test files under:
 
-Planned / suggested iterations for this project:
+```
+test/SimpleNotes.js (or .ts)
+```
 
-Archived notes (separate from deleted)
+---
 
-Public vs private notes
+## 🚀 Future Improvements
 
-Gas optimizations on the Note struct
+These features are planned or suggested as next steps:
 
-Full Hardhat test suite
-
-Optional front-end demo to interact with the contract
+- **Archived notes** (separate from deleted)
+- **Public vs private notes**
+- **Gas-optimized `Note` struct** (packaging types)
+- **Full Hardhat test suite**
+- Optional **front-end** to interact with the contract on any EVM chain
 
 This repository is intentionally kept simple to encourage small, incremental
 commits and experimentation.
