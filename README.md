@@ -93,3 +93,20 @@ npx hardhat init
 
 
 Place SimpleNotes.sol under contracts/, then write tests under test/.
+
+Future Improvements
+
+Planned / suggested iterations for this project:
+
+Archived notes (separate from deleted)
+
+Public vs private notes
+
+Gas optimizations on the Note struct
+
+Full Hardhat test suite
+
+Optional front-end demo to interact with the contract
+
+This repository is intentionally kept simple to encourage small, incremental
+commits and experimentation.
