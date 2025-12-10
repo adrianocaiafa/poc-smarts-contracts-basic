@@ -35,3 +35,19 @@ struct Note {
     uint256 updatedAt;
     bool deleted;
 }
+
+Key mappings:
+
+noteIdsByOwner[address] -> uint256[]
+
+likes[noteId] -> uint256
+
+hasLiked[noteId][address] -> bool
+
+pinnedNoteId[address] -> noteId
+
+Admin:
+
+owner – contract owner
+
+paused – simple switch to pause mutating functions
