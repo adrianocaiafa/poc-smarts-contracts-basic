@@ -69,3 +69,15 @@ Pins a note for the caller.
 
 setPaused(bool _paused)
 Owner-only; pauses or unpauses mutating operations.
+
+Read
+
+getNote(uint256 _id) -> Note
+
+getMyNotes() -> Note[]
+
+getNotesByOwner(address _owner) -> Note[]
+
+totalNotes() -> uint256
+
+myNotesCount() -> uint256
