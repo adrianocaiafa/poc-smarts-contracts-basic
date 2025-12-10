@@ -23,3 +23,15 @@ iterative improvements (archiving, visibility, gas optimizations, tests, etc.).
 - Pause/unpause mutating operations (owner-only)
 
 ---
+
+## Contract Overview
+
+```solidity
+struct Note {
+    uint256 id;
+    address owner;
+    string text;
+    uint256 createdAt;
+    uint256 updatedAt;
+    bool deleted;
+}
