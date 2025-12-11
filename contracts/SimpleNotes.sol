@@ -75,7 +75,8 @@ contract SimpleNotes {
                 text: _text,
                 createdAt: block.timestamp,
                 updatedAt: block.timestamp,
-                deleted: false
+                deleted: false,
+                archived: false
             })
         );
 
