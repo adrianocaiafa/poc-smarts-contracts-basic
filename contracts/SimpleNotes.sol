@@ -186,10 +186,14 @@ contract SimpleNotes {
         returns (Note[] memory)
     {
         uint256[] memory ids = noteIdsByOwner[_owner];
-        Note[] memory result = new Note[](ids.length);
+        uint256 len = ids.length;
+        Note[] memory result = new Note[](len);
 
-        for (uint256 i = 0; i < ids.length; i++) {
+        for (uint256 i; i < len; ) {
             result[i] = notes[ids[i]];
+            unchecked {
+                ++i;
+            }
         }
 
         return result;
