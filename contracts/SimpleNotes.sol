@@ -7,14 +7,14 @@ contract SimpleNotes {
     // -------------------------------------------------------------------------
 
     struct Note {
-        uint256 id;
-        address owner;
-        string text;
-        uint256 createdAt;
-        uint256 updatedAt;
+        uint64 id;
+        uint64 createdAt;
+        uint64 updatedAt;
         bool deleted;
         bool archived;
         bool isPublic;
+        address owner;
+        string text;
     }
 
     // -------------------------------------------------------------------------
@@ -74,14 +74,14 @@ contract SimpleNotes {
 
         notes.push(
             Note({
-                id: id,
-                owner: msg.sender,
-                text: _text,
-                createdAt: block.timestamp,
-                updatedAt: block.timestamp,
+                id: uint64(id),
+                createdAt: uint64(block.timestamp),
+                updatedAt: uint64(block.timestamp),
                 deleted: false,
                 archived: false,
-                isPublic: true
+                isPublic: true,
+                owner: msg.sender,
+                text: _text
             })
         );
 
@@ -96,7 +96,7 @@ contract SimpleNotes {
         require(!note.deleted, "Already deleted");
 
         note.deleted = true;
-        note.updatedAt = block.timestamp;
+        note.updatedAt = uint64(block.timestamp);
 
         emit NoteDeleted(_id);
     }
@@ -129,7 +129,7 @@ contract SimpleNotes {
         require(!note.archived, "Already archived");
 
         note.archived = true;
-        note.updatedAt = block.timestamp;
+        note.updatedAt = uint64(block.timestamp);
 
         emit NoteArchived(_id);
     }
@@ -141,7 +141,7 @@ contract SimpleNotes {
         require(!note.deleted, "Note deleted");
 
         note.archived = false;
-        note.updatedAt = block.timestamp;
+        note.updatedAt = uint64(block.timestamp);
 
         emit NoteUnarchived(_id);
     }
@@ -152,7 +152,7 @@ contract SimpleNotes {
         require(!note.deleted, "Note deleted");
 
         note.isPublic = _isPublic;
-        note.updatedAt = block.timestamp;
+        note.updatedAt = uint64(block.timestamp);
 
         emit NoteVisibilityChanged(_id, _isPublic);
     }

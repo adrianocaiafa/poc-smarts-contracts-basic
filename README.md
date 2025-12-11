@@ -34,14 +34,14 @@ feature improvements (archiving, visibility, gas optimizations, tests, etc.).
 
 ```solidity
 struct Note {
-    uint256 id;
-    address owner;
-    string text;
-    uint256 createdAt;
-    uint256 updatedAt;
+    uint64 id;
+    uint64 createdAt;
+    uint64 updatedAt;
     bool deleted;
     bool archived;
     bool isPublic;
+    address owner;
+    string text;
 }
 ```
 
@@ -149,8 +149,6 @@ test/SimpleNotes.js (or .ts)
 
 These features are planned or suggested as next steps:
 
-- **Gas-optimized `Note` struct** (packaging types)
-- **Full Hardhat test suite**
 - Optional **front-end** to interact with the contract on any EVM chain
 
 This repository is intentionally kept simple to encourage small, incremental
