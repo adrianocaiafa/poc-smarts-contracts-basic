@@ -40,4 +40,7 @@ contract SimpleTodo {
         t.deleted = true;
         emit TaskDeleted(msg.sender, _id);
     }
-}
+    
+    function getMyTasks() external view returns (Task[] memory) {
+        return tasksByUser[msg.sender];
+    }
