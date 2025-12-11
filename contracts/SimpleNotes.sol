@@ -79,7 +79,8 @@ contract SimpleNotes {
                 createdAt: block.timestamp,
                 updatedAt: block.timestamp,
                 deleted: false,
-                archived: false
+                archived: false,
+                isPublic: true
             })
         );
 
