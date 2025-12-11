@@ -44,3 +44,14 @@ contract SimpleTodo {
     function getMyTasks() external view returns (Task[] memory) {
         return tasksByUser[msg.sender];
     }
+    
+    function _getTask(address _user, uint256 _id)
+        internal
+        view
+        returns (Task storage)
+    {
+        Task[] storage list = tasksByUser[_user];
+        require(_id < list.length, "Invalid id");
+        return list[_id];
+    }
+}
