@@ -13,6 +13,7 @@ contract SimpleNotes {
         uint256 createdAt;
         uint256 updatedAt;
         bool deleted;
+        bool archived;
     }
 
     // -------------------------------------------------------------------------
