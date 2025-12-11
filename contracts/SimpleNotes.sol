@@ -40,7 +40,7 @@ contract SimpleNotes {
     event NotePinned(address indexed user, uint256 indexed noteId);
     event NoteArchived(uint256 indexed id);
     event NoteUnarchived(uint256 indexed id);
-    
+
     // -------------------------------------------------------------------------
     // MODIFIERS
     // -------------------------------------------------------------------------
@@ -184,6 +184,37 @@ contract SimpleNotes {
         return noteIdsByOwner[msg.sender].length;
     }
 
+    function getActiveNotesByOwner(address _owner)
+        external
+        view
+        returns (Note[] memory)
+    {
+        uint256[] memory ids = noteIdsByOwner[_owner];
+
+        // Primeiro conta quantas notas estão ativas
+        uint256 count;
+        for (uint256 i = 0; i < ids.length; i++) {
+            Note storage n = notes[ids[i]];
+            if (!n.deleted && !n.archived) {
+                count++;
+            }
+        }
+
+        // Agora monta o array final
+        Note[] memory result = new Note[](count);
+        uint256 index;
+
+        for (uint256 i = 0; i < ids.length; i++) {
+            Note storage n = notes[ids[i]];
+            if (!n.deleted && !n.archived) {
+                result[index] = n;
+                index++;
+            }
+        }
+
+        return result;
+    }
+    
     // -------------------------------------------------------------------------
     // OWNER FUNCTIONS
     // -------------------------------------------------------------------------
