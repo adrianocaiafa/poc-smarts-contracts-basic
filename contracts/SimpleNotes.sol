@@ -250,24 +250,31 @@ contract SimpleNotes {
         returns (Note[] memory)
     {
         uint256[] memory ids = noteIdsByOwner[_owner];
+        uint256 len = ids.length;
 
         // Conta quantas são públicas (e não deletadas)
         uint256 count;
-        for (uint256 i = 0; i < ids.length; i++) {
+        for (uint256 i = 0; i < len; i++) {
             Note storage n = notes[ids[i]];
             if (!n.deleted && n.isPublic) {
                 count++;
+            }
+            unchecked {
+                ++i;
             }
         }
 
         Note[] memory result = new Note[](count);
         uint256 index;
 
-        for (uint256 i = 0; i < ids.length; i++) {
+        for (uint256 i = 0; i < len; i++) {
             Note storage n = notes[ids[i]];
             if (!n.deleted && n.isPublic) {
                 result[index] = n;
                 index++;
+            }
+            unchecked {
+                ++i;
             }
         }
 
