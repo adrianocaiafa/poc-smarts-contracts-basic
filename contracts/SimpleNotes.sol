@@ -38,6 +38,7 @@ contract SimpleNotes {
     event NoteDeleted(uint256 indexed id);
     event NoteLiked(uint256 indexed id, address indexed user, uint256 totalLikes);
     event NotePinned(address indexed user, uint256 indexed noteId);
+    event NoteArchived(uint256 indexed id);
 
     // -------------------------------------------------------------------------
     // MODIFIERS
@@ -117,6 +118,17 @@ contract SimpleNotes {
         emit NotePinned(msg.sender, _id);
     }
 
+    function archiveNote(uint256 _id) external whenNotPaused {
+        Note storage note = notes[_id];
+        require(note.owner == msg.sender, "Not the owner");
+        require(!note.deleted, "Note deleted");
+        require(!note.archived, "Already archived");
+
+        note.archived = true;
+        note.updatedAt = block.timestamp;
+
+        emit NoteArchived(_id);
+    }
     // -------------------------------------------------------------------------
     // READ FUNCTIONS
     // -------------------------------------------------------------------------
