@@ -41,6 +41,7 @@ contract SimpleNotes {
     event NotePinned(address indexed user, uint256 indexed noteId);
     event NoteArchived(uint256 indexed id);
     event NoteUnarchived(uint256 indexed id);
+    event NoteVisibilityChanged(uint256 indexed id, bool isPublic);
 
     // -------------------------------------------------------------------------
     // MODIFIERS
@@ -144,6 +145,18 @@ contract SimpleNotes {
 
         emit NoteUnarchived(_id);
     }
+
+    function setVisibility(uint256 _id, bool _isPublic) external whenNotPaused {
+        Note storage note = notes[_id];
+        require(note.owner == msg.sender, "Not the owner");
+        require(!note.deleted, "Note deleted");
+
+        note.isPublic = _isPublic;
+        note.updatedAt = block.timestamp;
+
+        emit NoteVisibilityChanged(_id, _isPublic);
+    }
+    
     // -------------------------------------------------------------------------
     // READ FUNCTIONS
     // -------------------------------------------------------------------------
