@@ -16,6 +16,7 @@ contract SimpleTodo {
 
     event TaskAdded(address indexed user, uint256 indexed id, string text);
     event TaskToggled(address indexed user, uint256 indexed id, bool done);
+    event TaskDeleted(address indexed user, uint256 indexed id);
 
     function addTask(string calldata _text) external {
         Task[] storage list = tasksByUser[msg.sender];
@@ -31,5 +32,12 @@ contract SimpleTodo {
         require(!t.deleted, "Task deleted");
         t.done = !t.done;
         emit TaskToggled(msg.sender, _id, t.done);
+    }
+
+    function deleteTask(uint256 _id) external {
+        Task storage t = _getTask(msg.sender, _id);
+        require(!t.deleted, "Already deleted");
+        t.deleted = true;
+        emit TaskDeleted(msg.sender, _id);
     }
 }
