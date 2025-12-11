@@ -10,4 +10,8 @@ contract SimpleTodo {
         bool done;
         bool deleted;
     }
+
+    // tasksByUser[user] = array of tasks
+    mapping(address => Task[]) private tasksByUser;
+
 }
