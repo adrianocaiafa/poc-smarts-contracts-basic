@@ -15,6 +15,7 @@ contract SimpleTodo {
     mapping(address => Task[]) private tasksByUser;
 
     event TaskAdded(address indexed user, uint256 indexed id, string text);
+    event TaskToggled(address indexed user, uint256 indexed id, bool done);
 
     function addTask(string calldata _text) external {
         Task[] storage list = tasksByUser[msg.sender];
@@ -25,4 +26,10 @@ contract SimpleTodo {
         emit TaskAdded(msg.sender, id, _text);
     }    
 
+    function toggleDone(uint256 _id) external {
+        Task storage t = _getTask(msg.sender, _id);
+        require(!t.deleted, "Task deleted");
+        t.done = !t.done;
+        emit TaskToggled(msg.sender, _id, t.done);
+    }
 }
