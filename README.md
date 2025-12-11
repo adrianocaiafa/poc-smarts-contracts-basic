@@ -24,6 +24,7 @@ feature improvements (archiving, visibility, gas optimizations, tests, etc.).
 - Notes can now be archived/unarchived
 - Archived notes remain readable but filtered out by helper methods
 - Active notes = not deleted and not archived
+- Support for public and private notes with visibility toggling
 
 ---
 
@@ -40,6 +41,7 @@ struct Note {
     uint256 updatedAt;
     bool deleted;
     bool archived;
+    bool isPublic;
 }
 ```
 
@@ -86,6 +88,9 @@ Pins a note so the caller can mark a preferred/important note.
 #### `setPaused(bool _paused)`  
 Owner-only; pauses or unpauses mutating operations.
 
+#### `setVisibility(uint256 _id, bool _isPublic)`  
+Sets a note as public or private (owner-only).
+
 ---
 
 ### Read functions
@@ -107,6 +112,9 @@ Total count of notes stored.
 
 #### `myNotesCount() -> uint256`
 How many notes the caller has created.
+
+#### `getPublicNotesByOwner(address _owner) -> Note[]`
+Returns all public, non-deleted, non-archived notes from the given owner.
 
 ---
 
@@ -141,7 +149,6 @@ test/SimpleNotes.js (or .ts)
 
 These features are planned or suggested as next steps:
 
-- **Public vs private notes**
 - **Gas-optimized `Note` struct** (packaging types)
 - **Full Hardhat test suite**
 - Optional **front-end** to interact with the contract on any EVM chain
