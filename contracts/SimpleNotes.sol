@@ -213,13 +213,16 @@ contract SimpleNotes {
         returns (Note[] memory)
     {
         uint256[] memory ids = noteIdsByOwner[_owner];
-
+        uint256 len = ids.length;
         // Primeiro conta quantas notas estão ativas
         uint256 count;
-        for (uint256 i = 0; i < ids.length; i++) {
+        for (uint256 i = 0; i < len; i++) {
             Note storage n = notes[ids[i]];
             if (!n.deleted && !n.archived) {
                 count++;
+            }
+            unchecked {
+                ++i;
             }
         }
 
@@ -227,11 +230,14 @@ contract SimpleNotes {
         Note[] memory result = new Note[](count);
         uint256 index;
 
-        for (uint256 i = 0; i < ids.length; i++) {
+        for (uint256 i = 0; i < len; i++) {
             Note storage n = notes[ids[i]];
             if (!n.deleted && !n.archived) {
                 result[index] = n;
                 index++;
+            }
+            unchecked {
+                ++i;
             }
         }
 
