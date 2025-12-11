@@ -21,6 +21,9 @@ feature improvements (archiving, visibility, gas optimizations, tests, etc.).
   - All notes created by the caller  
   - All notes created by a specific owner
 - Pause/unpause mutating operations (owner-only)
+- Notes can now be archived/unarchived
+- Archived notes remain readable but filtered out by helper methods
+- Active notes = not deleted and not archived
 
 ---
 
@@ -67,6 +70,12 @@ Creates a new note owned by `msg.sender`.
 #### `deleteNote(uint256 _id)`
 Marks a note as deleted (only removable by its owner).
 
+#### `archiveNote(uint256 _id)`
+Archives a note without deleting it (owner-only).
+
+#### `unarchiveNote(uint256 _id)`
+Restores a previously archived note (owner-only).
+
 #### `likeNote(uint256 _id)`
 Registers a like from `msg.sender`. One like per address.
 
@@ -88,6 +97,9 @@ Returns all notes created by the caller.
 
 #### `getNotesByOwner(address _owner) -> Note[]`
 Returns all notes created by a specific owner.
+
+#### `getActiveNotesByOwner(address _owner) -> Note[]`
+Returns only notes that are not deleted and not archived.
 
 #### `totalNotes() -> uint256`
 Total count of notes stored.
@@ -128,7 +140,6 @@ test/SimpleNotes.js (or .ts)
 
 These features are planned or suggested as next steps:
 
-- **Archived notes** (separate from deleted)
 - **Public vs private notes**
 - **Gas-optimized `Note` struct** (packaging types)
 - **Full Hardhat test suite**
