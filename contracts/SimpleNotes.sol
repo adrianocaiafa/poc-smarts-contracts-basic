@@ -156,7 +156,7 @@ contract SimpleNotes {
 
         emit NoteVisibilityChanged(_id, _isPublic);
     }
-    
+
     // -------------------------------------------------------------------------
     // READ FUNCTIONS
     // -------------------------------------------------------------------------
@@ -230,6 +230,35 @@ contract SimpleNotes {
         return result;
     }
 
+    function getPublicNotesByOwner(address _owner)
+        external
+        view
+        returns (Note[] memory)
+    {
+        uint256[] memory ids = noteIdsByOwner[_owner];
+
+        // Conta quantas são públicas (e não deletadas)
+        uint256 count;
+        for (uint256 i = 0; i < ids.length; i++) {
+            Note storage n = notes[ids[i]];
+            if (!n.deleted && n.isPublic) {
+                count++;
+            }
+        }
+
+        Note[] memory result = new Note[](count);
+        uint256 index;
+
+        for (uint256 i = 0; i < ids.length; i++) {
+            Note storage n = notes[ids[i]];
+            if (!n.deleted && n.isPublic) {
+                result[index] = n;
+                index++;
+            }
+        }
+
+        return result;
+    }
     // -------------------------------------------------------------------------
     // OWNER FUNCTIONS
     // -------------------------------------------------------------------------
