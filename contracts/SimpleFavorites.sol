@@ -35,4 +35,24 @@ contract SimpleFavorites {
         uint256 userInteractions,
         uint256 totalUniqueUsers
     );
+
+    // -------------------------------------------------------------------------
+    // WRITE FUNCTIONS
+    // -------------------------------------------------------------------------
+
+    /// @notice Set or update your favorite number
+    function setFavorite(uint256 _number) external {
+        _registerInteraction();
+
+        favoriteNumber[msg.sender] = _number;
+        hasFavorite[msg.sender] = true;
+
+        emit FavoriteSet(
+            msg.sender,
+            _number,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
+    }
+
 }
