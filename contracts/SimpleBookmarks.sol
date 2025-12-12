@@ -77,4 +77,18 @@ contract SimpleBookmarks {
         }
         interactionsCount[msg.sender] += 1;
     }     
+
+    // -------------------------------------------------------------------------
+    // READ HELPERS
+    // -------------------------------------------------------------------------
+
+    /// @notice How many times you have interacted with this contract
+    function myInteractions() external view returns (uint256) {
+        return interactionsCount[msg.sender];
+    }
+
+    /// @notice Returns your current bookmark string
+    function myBookmark() external view returns (string memory) {
+        return bookmark[msg.sender];
+    }    
 }
