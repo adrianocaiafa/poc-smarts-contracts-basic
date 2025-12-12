@@ -12,6 +12,10 @@ contract SimpleVoting {
 
     event Voted(address indexed voter, bool support);
 
+    constructor(string memory _proposal) {
+        proposal = _proposal;
+    }
+
     /// @notice Vote on the proposal
     /// @param support true = yes, false = no
     function vote(bool support) external {
