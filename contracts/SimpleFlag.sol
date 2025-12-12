@@ -28,4 +28,11 @@ contract SimpleFlag {
         uint256 userInteractions,
         uint256 totalUniqueUsers
     );
+
+    event FlagToggled(
+        address indexed user,
+        bool newValue,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );    
 }
