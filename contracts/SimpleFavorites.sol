@@ -55,4 +55,17 @@ contract SimpleFavorites {
         );
     }
 
+    /// @notice Clear your favorite number
+    function clearFavorite() external {
+        _registerInteraction();
+
+        delete favoriteNumber[msg.sender];
+        hasFavorite[msg.sender] = false;
+
+        emit FavoriteCleared(
+            msg.sender,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
+    }
 }
