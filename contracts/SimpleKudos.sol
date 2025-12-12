@@ -11,5 +11,16 @@ contract SimpleKudos {
     uint256 public totalUniqueUsers;
     mapping(address => bool) public hasInteracted;
     mapping(address => uint256) public interactionsCount;
+    
+    // -------------------------------------------------------------------------
+    // KUDOS STATE
+    // -------------------------------------------------------------------------
 
+    // Total kudos a user has received
+    mapping(address => uint256) public kudosReceived;
+
+    // Total kudos a user has sent
+    mapping(address => uint256) public kudosSent;
+
+    uint256 public totalKudos;
 }
