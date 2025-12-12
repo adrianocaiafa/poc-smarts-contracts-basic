@@ -56,5 +56,19 @@ contract SimpleColorPicker {
             interactionsCount[msg.sender],
             totalUniqueUsers
         );
-    }    
+    }   
+
+    /// @notice Clear your favorite color
+    function clearColor() external {
+        _registerInteraction();
+
+        delete favoriteColor[msg.sender];
+        hasColor[msg.sender] = false;
+
+        emit ColorCleared(
+            msg.sender,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
+    }     
 }
