@@ -64,5 +64,17 @@ contract SimpleStatus {
             interactionsCount[msg.sender],
             totalUniqueUsers
         );
+    }
+
+    // -------------------------------------------------------------------------
+    // INTERNAL
+    // -------------------------------------------------------------------------
+
+    function _registerInteraction() internal {
+        if (!hasInteracted[msg.sender]) {
+            hasInteracted[msg.sender] = true;
+            totalUniqueUsers += 1;
+        }
+        interactionsCount[msg.sender] += 1;
     }    
 }
