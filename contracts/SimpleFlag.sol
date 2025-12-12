@@ -34,5 +34,23 @@ contract SimpleFlag {
         bool newValue,
         uint256 userInteractions,
         uint256 totalUniqueUsers
-    );    
+    );
+
+    // -------------------------------------------------------------------------
+    // WRITE FUNCTIONS
+    // -------------------------------------------------------------------------
+
+    /// @notice Explicitly set your flag value to true or false
+    function setFlag(bool _value) external {
+        _registerInteraction();
+
+        flag[msg.sender] = _value;
+
+        emit FlagSet(
+            msg.sender,
+            _value,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
+    }    
 }
