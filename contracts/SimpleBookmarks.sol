@@ -51,5 +51,18 @@ contract SimpleBookmarks {
             interactionsCount[msg.sender],
             totalUniqueUsers
         );
-    }    
+    }  
+
+    /// @notice Clear your current bookmark
+    function clearBookmark() external {
+        _registerInteraction();
+
+        delete bookmark[msg.sender];
+
+        emit BookmarkCleared(
+            msg.sender,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
+    }      
 }
