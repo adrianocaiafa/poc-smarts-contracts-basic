@@ -93,4 +93,8 @@ contract SimpleColorPicker {
         return interactionsCount[msg.sender];
     }
 
+    /// @notice Returns your favorite color (0xRRGGBB) and whether it was set
+    function myColor() external view returns (uint24 color, bool set) {
+        return (favoriteColor[msg.sender], hasColor[msg.sender]);
+    }
 }
