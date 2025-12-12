@@ -51,5 +51,18 @@ contract SimpleStatus {
             interactionsCount[msg.sender],
             totalUniqueUsers
         );
-    }     
+    }
+
+    /// @notice Clear your current status
+    function clearStatus() external {
+        _registerInteraction();
+
+        delete status[msg.sender];
+
+        emit StatusCleared(
+            msg.sender,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
+    }    
 }
