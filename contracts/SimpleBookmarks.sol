@@ -28,4 +28,10 @@ contract SimpleBookmarks {
         uint256 userInteractions,
         uint256 totalUniqueUsers
     );     
+
+    event BookmarkCleared(
+        address indexed user,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );    
 }
