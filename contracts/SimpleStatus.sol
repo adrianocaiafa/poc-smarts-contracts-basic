@@ -17,4 +17,15 @@ contract SimpleStatus {
     // -------------------------------------------------------------------------
 
     mapping(address => string) public status;    
+
+    // -------------------------------------------------------------------------
+    // EVENTS
+    // -------------------------------------------------------------------------
+
+    event StatusSet(
+        address indexed user,
+        string newStatus,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );    
 }
