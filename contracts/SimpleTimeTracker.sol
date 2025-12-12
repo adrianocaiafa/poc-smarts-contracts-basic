@@ -33,4 +33,26 @@ contract SimpleTimeTracker {
         uint256 totalUniqueUsers,
         uint256 totalCheckIns
     );
+
+    // -------------------------------------------------------------------------
+    // WRITE FUNCTIONS
+    // -------------------------------------------------------------------------
+
+    /// @notice Record a check-in for the caller
+    function checkIn() external {
+        _registerInteraction();
+
+        checkInCount[msg.sender] += 1;
+        lastCheckInAt[msg.sender] = block.timestamp;
+        totalCheckIns += 1;
+
+        emit CheckedIn(
+            msg.sender,
+            checkInCount[msg.sender],
+            block.timestamp,
+            interactionsCount[msg.sender],
+            totalUniqueUsers,
+            totalCheckIns
+        );
+    }
 }
