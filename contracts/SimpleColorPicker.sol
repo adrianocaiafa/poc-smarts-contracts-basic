@@ -38,4 +38,23 @@ contract SimpleColorPicker {
         uint256 userInteractions,
         uint256 totalUniqueUsers
     );    
+
+    // -------------------------------------------------------------------------
+    // WRITE FUNCTIONS
+    // -------------------------------------------------------------------------
+
+    /// @notice Set your favorite color as a uint24 RGB value (0xRRGGBB)
+    function setColor(uint24 _color) external {
+        _registerInteraction();
+
+        favoriteColor[msg.sender] = _color;
+        hasColor[msg.sender] = true;
+
+        emit ColorSet(
+            msg.sender,
+            _color,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
+    }    
 }
