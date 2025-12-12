@@ -4,4 +4,11 @@ pragma solidity ^0.8.30;
 /// @title SimpleFlag – on-chain boolean flag per user
 /// @author acaiafa.base.eth
 contract SimpleFlag {
+    // -------------------------------------------------------------------------
+    // GENERIC INTERACTION METRICS
+    // -------------------------------------------------------------------------
+
+    uint256 public totalUniqueUsers;
+    mapping(address => bool) public hasInteracted;
+    mapping(address => uint256) public interactionsCount;    
 }
