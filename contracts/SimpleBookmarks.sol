@@ -16,5 +16,16 @@ contract SimpleBookmarks {
     // BOOKMARK STATE
     // -------------------------------------------------------------------------
 
-    mapping(address => string) public bookmark;    
+    mapping(address => string) public bookmark;   
+
+    // -------------------------------------------------------------------------
+    // EVENTS
+    // -------------------------------------------------------------------------
+
+    event BookmarkSaved(
+        address indexed user,
+        string url,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );     
 }
