@@ -33,5 +33,23 @@ contract SimpleStatus {
         address indexed user,
         uint256 userInteractions,
         uint256 totalUniqueUsers
-    );    
+    );   
+
+    // -------------------------------------------------------------------------
+    // WRITE FUNCTIONS
+    // -------------------------------------------------------------------------
+
+    /// @notice Set or update your on-chain status message
+    function setStatus(string calldata _status) external {
+        _registerInteraction();
+
+        status[msg.sender] = _status;
+
+        emit StatusSet(
+            msg.sender,
+            _status,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
+    }     
 }
