@@ -23,4 +23,17 @@ contract SimpleKudos {
     mapping(address => uint256) public kudosSent;
 
     uint256 public totalKudos;
+
+    // -------------------------------------------------------------------------
+    // EVENTS
+    // -------------------------------------------------------------------------
+
+    event KudosSent(
+        address indexed from,
+        address indexed to,
+        uint256 amount,
+        uint256 senderInteractions,
+        uint256 totalUniqueUsers,
+        uint256 totalKudos
+    );    
 }
