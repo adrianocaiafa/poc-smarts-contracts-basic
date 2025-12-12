@@ -28,4 +28,10 @@ contract SimpleStatus {
         uint256 userInteractions,
         uint256 totalUniqueUsers
     );    
+
+    event StatusCleared(
+        address indexed user,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );    
 }
