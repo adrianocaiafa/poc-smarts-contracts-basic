@@ -9,4 +9,6 @@ contract SimpleVoting {
     uint256 public noVotes;
 
     mapping(address => bool) public hasVoted;
+
+    event Voted(address indexed voter, bool support);
 }
