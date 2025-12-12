@@ -20,5 +20,16 @@ contract SimpleColorPicker {
     mapping(address => uint24) public favoriteColor;
 
     // Tracks if a user has explicitly set a color at least once
-    mapping(address => bool) public hasColor;       
+    mapping(address => bool) public hasColor;     
+
+    // -------------------------------------------------------------------------
+    // EVENTS
+    // -------------------------------------------------------------------------
+
+    event ColorSet(
+        address indexed user,
+        uint24 color,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );      
 }
