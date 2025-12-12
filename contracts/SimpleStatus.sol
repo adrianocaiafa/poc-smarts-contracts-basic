@@ -76,5 +76,19 @@ contract SimpleStatus {
             totalUniqueUsers += 1;
         }
         interactionsCount[msg.sender] += 1;
-    }    
+    } 
+
+    // -------------------------------------------------------------------------
+    // READ HELPERS
+    // -------------------------------------------------------------------------
+
+    /// @notice How many times you have interacted with this contract
+    function myInteractions() external view returns (uint256) {
+        return interactionsCount[msg.sender];
+    }
+
+    /// @notice Returns your current status string
+    function myStatus() external view returns (string memory) {
+        return status[msg.sender];
+    }       
 }
