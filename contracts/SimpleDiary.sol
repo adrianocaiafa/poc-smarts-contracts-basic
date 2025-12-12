@@ -23,4 +23,13 @@ contract SimpleDiary {
         delete entries[msg.sender];
         emit EntryCleared(msg.sender);
     }
+
+    function getEntry(address _user)
+        external
+        view
+        returns (string memory text, uint256 updatedAt)
+    {
+        Entry storage e = entries[_user];
+        return (e.text, e.updatedAt);
+    }
 }
