@@ -21,4 +21,16 @@ contract SimpleTimeTracker {
 
     uint256 public totalCheckIns;
 
+    // -------------------------------------------------------------------------
+    // EVENTS
+    // -------------------------------------------------------------------------
+
+    event CheckedIn(
+        address indexed user,
+        uint256 userCheckIns,
+        uint256 timestamp,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers,
+        uint256 totalCheckIns
+    );
 }
