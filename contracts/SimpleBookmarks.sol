@@ -34,4 +34,22 @@ contract SimpleBookmarks {
         uint256 userInteractions,
         uint256 totalUniqueUsers
     );    
+
+    // -------------------------------------------------------------------------
+    // WRITE FUNCTIONS
+    // -------------------------------------------------------------------------
+
+    /// @notice Save or update your single on-chain bookmark (URL, handle, etc.)
+    function saveBookmark(string calldata _url) external {
+        _registerInteraction();
+
+        bookmark[msg.sender] = _url;
+
+        emit BookmarkSaved(
+            msg.sender,
+            _url,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
+    }    
 }
