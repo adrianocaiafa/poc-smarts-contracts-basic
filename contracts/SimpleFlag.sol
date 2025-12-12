@@ -52,5 +52,20 @@ contract SimpleFlag {
             interactionsCount[msg.sender],
             totalUniqueUsers
         );
+    }
+
+    /// @notice Toggle your current flag value
+    function toggleFlag() external {
+        _registerInteraction();
+
+        bool newValue = !flag[msg.sender];
+        flag[msg.sender] = newValue;
+
+        emit FlagToggled(
+            msg.sender,
+            newValue,
+            interactionsCount[msg.sender],
+            totalUniqueUsers
+        );
     }    
 }
