@@ -11,4 +11,10 @@ contract SimpleBookmarks {
     uint256 public totalUniqueUsers;
     mapping(address => bool) public hasInteracted;
     mapping(address => uint256) public interactionsCount;    
+
+    // -------------------------------------------------------------------------
+    // BOOKMARK STATE
+    // -------------------------------------------------------------------------
+
+    mapping(address => string) public bookmark;    
 }
