@@ -80,4 +80,22 @@ contract SimpleFavorites {
         }
         interactionsCount[msg.sender] += 1;
     }    
+
+    // -------------------------------------------------------------------------
+    // READ HELPERS
+    // -------------------------------------------------------------------------
+
+    /// @notice How many times you have interacted with this contract
+    function myInteractions() external view returns (uint256) {
+        return interactionsCount[msg.sender];
+    }
+
+    /// @notice Returns your favorite number and whether it is set
+    function myFavorite()
+        external
+        view
+        returns (uint256 number, bool set)
+    {
+        return (favoriteNumber[msg.sender], hasFavorite[msg.sender]);
+    }    
 }
