@@ -18,4 +18,14 @@ contract SimpleFlag {
 
     mapping(address => bool) public flag;
 
+    // -------------------------------------------------------------------------
+    // EVENTS
+    // -------------------------------------------------------------------------
+
+    event FlagSet(
+        address indexed user,
+        bool value,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );
 }
