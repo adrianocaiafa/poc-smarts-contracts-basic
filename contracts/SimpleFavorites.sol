@@ -17,5 +17,17 @@ contract SimpleFavorites {
     // -------------------------------------------------------------------------
 
     mapping(address => uint256) public favoriteNumber;
-    mapping(address => bool) public hasFavorite;    
+    mapping(address => bool) public hasFavorite;  
+
+    // -------------------------------------------------------------------------
+    // EVENTS
+    // -------------------------------------------------------------------------
+
+    event FavoriteSet(
+        address indexed user,
+        uint256 number,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );
+
 }
