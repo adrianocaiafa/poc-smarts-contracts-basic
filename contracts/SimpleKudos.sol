@@ -81,5 +81,10 @@ contract SimpleKudos {
     /// @notice How many times you have interacted with this contract
     function myInteractions() external view returns (uint256) {
         return interactionsCount[msg.sender];
-    }    
+    }   
+
+    /// @notice How many kudos you have sent
+    function myKudosSent() external view returns (uint256) {
+        return kudosSent[msg.sender];
+    }     
 }
