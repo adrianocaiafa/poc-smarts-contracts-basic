@@ -10,5 +10,15 @@ contract SimpleColorPicker {
 
     uint256 public totalUniqueUsers;
     mapping(address => bool) public hasInteracted;
-    mapping(address => uint256) public interactionsCount;    
+    mapping(address => uint256) public interactionsCount; 
+
+    // -------------------------------------------------------------------------
+    // COLOR STATE
+    // -------------------------------------------------------------------------
+
+    // Favorite color encoded as uint24 (0xRRGGBB)
+    mapping(address => uint24) public favoriteColor;
+
+    // Tracks if a user has explicitly set a color at least once
+    mapping(address => bool) public hasColor;       
 }
