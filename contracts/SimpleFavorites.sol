@@ -11,4 +11,11 @@ contract SimpleFavorites {
     uint256 public totalUniqueUsers;
     mapping(address => bool) public hasInteracted;
     mapping(address => uint256) public interactionsCount;    
+
+    // -------------------------------------------------------------------------
+    // FAVORITE STATE
+    // -------------------------------------------------------------------------
+
+    mapping(address => uint256) public favoriteNumber;
+    mapping(address => bool) public hasFavorite;    
 }
