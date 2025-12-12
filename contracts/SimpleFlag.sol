@@ -10,5 +10,12 @@ contract SimpleFlag {
 
     uint256 public totalUniqueUsers;
     mapping(address => bool) public hasInteracted;
-    mapping(address => uint256) public interactionsCount;    
+    mapping(address => uint256) public interactionsCount;
+
+    // -------------------------------------------------------------------------
+    // FLAG STATE
+    // -------------------------------------------------------------------------
+
+    mapping(address => bool) public flag;
+
 }
