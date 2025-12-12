@@ -30,4 +30,9 @@ contract SimpleFavorites {
         uint256 totalUniqueUsers
     );
 
+    event FavoriteCleared(
+        address indexed user,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );
 }
