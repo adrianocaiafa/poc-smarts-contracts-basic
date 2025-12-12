@@ -32,4 +32,10 @@ contract SimpleColorPicker {
         uint256 userInteractions,
         uint256 totalUniqueUsers
     );      
+
+    event ColorCleared(
+        address indexed user,
+        uint256 userInteractions,
+        uint256 totalUniqueUsers
+    );    
 }
