@@ -22,4 +22,15 @@ contract SimpleRaffle {
     error TransferFailed();
     error RoundStillOpen();
 
+    // -----------------------
+    // Config (MVP)
+    // -----------------------
+    uint256 public constant MAX_TICKETS_PER_TX = 100;
+
+    address public owner;
+    uint256 public ticketPriceWei;
+
+    uint256 public currentRound = 1;
+
+
 }
