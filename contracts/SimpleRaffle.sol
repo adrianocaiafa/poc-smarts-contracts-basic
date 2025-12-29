@@ -32,5 +32,11 @@ contract SimpleRaffle {
 
     uint256 public currentRound = 1;
 
+    // Round state
+    mapping(uint256 => bool) public isOpen;                 // round => open?
+    mapping(uint256 => uint256) public totalTickets;        // round => total tickets
+    mapping(uint256 => uint256) public pot;                 // round => ETH collected
+    mapping(uint256 => address) public winner;              // round => winner address
+
 
 }
