@@ -103,4 +103,29 @@ contract SimpleRaffle {
         emit TicketPriceChanged(ticketPriceWei, newPriceWei);
         ticketPriceWei = newPriceWei;
     }
+
+    // -----------------------
+    // Core: buy tickets
+    // -----------------------
+    function buyTickets(uint256 ticketCount) external payable {
+        uint256 round = currentRound;
+
+        if (!isOpen[round]) revert RaffleClosed();
+        if (ticketCount == 0 || ticketCount > MAX_TICKETS_PER_TX) revert InvalidTicketCount();
+
+        uint256 expected = ticketPriceWei * ticketCount;
+        if (msg.value != expected) revert InvalidValue();
+
+        // Add to participant list if first time in round
+        if (!isParticipant[round][msg.sender]) {
+            isParticipant[round][msg.sender] = true;
+            participants[round].push(msg.sender);
+        }
+
+        ticketsOf[round][msg.sender] += ticketCount;
+        totalTickets[round] += ticketCount;
+        pot[round] += msg.value;
+
+        emit TicketsBought(round, msg.sender, ticketCount, msg.value);
+    }
 }
