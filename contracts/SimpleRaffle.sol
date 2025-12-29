@@ -207,4 +207,23 @@ contract SimpleRaffle {
 
         emit NewRoundStarted(currentRound);
     }
+
+    // -----------------------
+    // Claim prize (winner)
+    // -----------------------
+    function claimPrize() external {
+        uint256 amount = claimable[msg.sender];
+        if (amount == 0) revert PrizeNotAvailable();
+
+        claimable[msg.sender] = 0;
+
+        (bool ok, ) = msg.sender.call{value: amount}("");
+        if (!ok) {
+            // restore credit if transfer fails
+            claimable[msg.sender] = amount;
+            revert TransferFailed();
+        }
+
+        emit PrizeClaimed(msg.sender, amount);
+    }
 }
