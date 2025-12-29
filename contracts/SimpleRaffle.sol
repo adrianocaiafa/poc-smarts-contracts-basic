@@ -66,4 +66,7 @@ contract SimpleRaffle {
         uint256 totalTickets,
         uint256 potWei
     );
+
+    event NewRoundStarted(uint256 indexed newRound);
+    event PrizeClaimed(address indexed winner, uint256 amountWei);
 }
