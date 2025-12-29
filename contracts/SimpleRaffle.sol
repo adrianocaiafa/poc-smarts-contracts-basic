@@ -52,4 +52,18 @@ contract SimpleRaffle {
     event OwnerChanged(address indexed oldOwner, address indexed newOwner);
     event TicketPriceChanged(uint256 oldPriceWei, uint256 newPriceWei);
 
+    event TicketsBought(
+        uint256 indexed round,
+        address indexed buyer,
+        uint256 ticketCount,
+        uint256 paidWei
+    );
+
+    event RoundClosed(
+        uint256 indexed round,
+        address indexed winner,
+        uint256 winnerTickets,
+        uint256 totalTickets,
+        uint256 potWei
+    );
 }
