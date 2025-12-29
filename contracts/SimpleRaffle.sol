@@ -259,4 +259,9 @@ contract SimpleRaffle {
     function getParticipantAtIndex(uint256 round, uint256 index) external view returns (address) {
         return participants[round][index];
     }
+
+    // Accept plain ETH (optional). You can remove if you want strict ticket-only funding.
+    receive() external payable {
+        pot[currentRound] += msg.value;
+    }
 }
