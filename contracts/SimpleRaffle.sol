@@ -226,4 +226,37 @@ contract SimpleRaffle {
 
         emit PrizeClaimed(msg.sender, amount);
     }
+
+    // -----------------------
+    // Views (read-only)
+    // -----------------------
+    function getRoundStatus(uint256 round)
+        external
+        view
+        returns (
+            uint256 roundId,
+            bool open,
+            uint256 ticketsSold,
+            uint256 potWei,
+            address roundWinner,
+            uint256 participantCount
+        )
+    {
+        return (
+            round,
+            isOpen[round],
+            totalTickets[round],
+            pot[round],
+            winner[round],
+            participants[round].length
+        );
+    }
+
+    function getParticipantsCount(uint256 round) external view returns (uint256) {
+        return participants[round].length;
+    }
+
+    function getParticipantAtIndex(uint256 round, uint256 index) external view returns (address) {
+        return participants[round][index];
+    }
 }
