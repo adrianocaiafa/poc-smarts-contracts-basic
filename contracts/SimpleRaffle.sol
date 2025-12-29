@@ -128,4 +128,70 @@ contract SimpleRaffle {
 
         emit TicketsBought(round, msg.sender, ticketCount, msg.value);
     }
+
+    // -----------------------
+    // Admin: close and pick winner (weighted)
+    // -----------------------
+    function closeAndPickWinner() external onlyOwner {
+        uint256 round = currentRound;
+
+        if (!isOpen[round]) revert AlreadyClosed();
+        uint256 sold = totalTickets[round];
+        if (sold == 0) revert NoParticipants();
+
+        isOpen[round] = false;
+
+        // Pseudo-random seed (MVP, not secure)
+        uint256 rnd = uint256(
+            keccak256(
+                abi.encodePacked(
+                    block.prevrandao, // EVM randomness source (still manipulable)
+                    block.timestamp,
+                    block.number,
+                    sold,
+                    pot[round],
+                    address(this)
+                )
+            )
+        );
+
+        // Winning ticket number in [1..sold]
+        uint256 winningTicket = (rnd % sold) + 1;
+
+        // Walk participants cumulatively to find who owns that ticket
+        address win = _findWinnerByTicket(round, winningTicket);
+
+        winner[round] = win;
+
+        uint256 prize = pot[round];
+        pot[round] = 0;
+
+        // Pull payment: credit winner
+        claimable[win] += prize;
+
+        emit RoundClosed(
+            round,
+            win,
+            ticketsOf[round][win],
+            sold,
+            prize
+        );
+    }
+
+    function _findWinnerByTicket(uint256 round, uint256 winningTicket) internal view returns (address) {
+        address[] memory list = participants[round];
+        uint256 cumulative = 0;
+
+        // O(n) scan - fine for MVP
+        for (uint256 i = 0; i < list.length; i++) {
+            address p = list[i];
+            cumulative += ticketsOf[round][p];
+            if (winningTicket <= cumulative) {
+                return p;
+            }
+        }
+
+        // Should never happen if totals are consistent
+        return list[list.length - 1];
+    }
 }
