@@ -38,5 +38,10 @@ contract SimpleRaffle {
     mapping(uint256 => uint256) public pot;                 // round => ETH collected
     mapping(uint256 => address) public winner;              // round => winner address
 
+    // Participant storage
+    mapping(uint256 => address[]) private participants;                 // round => participants list
+    mapping(uint256 => mapping(address => bool)) private isParticipant; // round => already in list?
+    mapping(uint256 => mapping(address => uint256)) public ticketsOf;   // round => participant => ticket count
+
 
 }
