@@ -43,5 +43,7 @@ contract SimpleRaffle {
     mapping(uint256 => mapping(address => bool)) private isParticipant; // round => already in list?
     mapping(uint256 => mapping(address => uint256)) public ticketsOf;   // round => participant => ticket count
 
+    // Pull payment credits (winner claims)
+    mapping(address => uint256) public claimable;
 
 }
