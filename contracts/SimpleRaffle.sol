@@ -46,4 +46,10 @@ contract SimpleRaffle {
     // Pull payment credits (winner claims)
     mapping(address => uint256) public claimable;
 
+    // -----------------------
+    // Events
+    // -----------------------
+    event OwnerChanged(address indexed oldOwner, address indexed newOwner);
+    event TicketPriceChanged(uint256 oldPriceWei, uint256 newPriceWei);
+
 }
