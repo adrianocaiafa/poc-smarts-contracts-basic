@@ -69,4 +69,22 @@ contract SimpleRaffle {
 
     event NewRoundStarted(uint256 indexed newRound);
     event PrizeClaimed(address indexed winner, uint256 amountWei);
+
+    // -----------------------
+    // Modifiers
+    // -----------------------
+    modifier onlyOwner() {
+        require(msg.sender == owner, "NOT_OWNER");
+        _;
+    }
+
+    // -----------------------
+    // Constructor
+    // -----------------------
+    constructor(uint256 _ticketPriceWei) {
+        owner = msg.sender;
+        ticketPriceWei = _ticketPriceWei;
+
+        isOpen[currentRound] = true;
+    }
 }
