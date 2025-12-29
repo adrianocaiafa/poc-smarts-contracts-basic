@@ -194,4 +194,17 @@ contract SimpleRaffle {
         // Should never happen if totals are consistent
         return list[list.length - 1];
     }
+
+    // -----------------------
+    // Admin: start new round
+    // -----------------------
+    function startNewRound() external onlyOwner {
+        uint256 round = currentRound;
+        if (isOpen[round]) revert RoundStillOpen();
+
+        currentRound = round + 1;
+        isOpen[currentRound] = true;
+
+        emit NewRoundStarted(currentRound);
+    }
 }
