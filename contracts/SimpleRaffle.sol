@@ -87,4 +87,20 @@ contract SimpleRaffle {
 
         isOpen[currentRound] = true;
     }
+
+    // -----------------------
+    // Admin / Config
+    // -----------------------
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(newOwner != address(0), "ZERO_ADDR");
+        emit OwnerChanged(owner, newOwner);
+        owner = newOwner;
+    }
+
+    /// @notice You can set a very low ticket price (in wei).
+    /// @dev Keep in mind gas will likely dwarf the ticket price.
+    function setTicketPriceWei(uint256 newPriceWei) external onlyOwner {
+        emit TicketPriceChanged(ticketPriceWei, newPriceWei);
+        ticketPriceWei = newPriceWei;
+    }
 }
