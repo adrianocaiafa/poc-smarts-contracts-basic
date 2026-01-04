@@ -243,6 +243,15 @@ contract SimpleMultiSig {
         }
     }
 
+    /// @notice Retorna informações detalhadas sobre uma proposta
+    /// @param _proposalId ID da proposta
+    /// @return id ID da proposta
+    /// @return proposer Endereço do proponente
+    /// @return target Endereço alvo da proposta
+    /// @return value Valor em wei da proposta
+    /// @return executed Se já foi executada
+    /// @return approvalCount Quantidade de aprovações
+    /// @return canExecute Se pode ser executada agora
     function getProposal(uint256 _proposalId)
         external
         view
@@ -268,6 +277,10 @@ contract SimpleMultiSig {
         );
     }
 
+    /// @notice Verifica se um signatário aprovou uma proposta específica
+    /// @param _proposalId ID da proposta
+    /// @param _signer Endereço do signatário
+    /// @return true se aprovou, false caso contrário
     function hasApproved(uint256 _proposalId, address _signer)
         external
         view
@@ -276,18 +289,26 @@ contract SimpleMultiSig {
         return proposals[_proposalId].approvals[_signer];
     }
 
+    /// @notice Retorna array com todos os signatários ativos
+    /// @return Array de endereços dos signatários
     function getSigners() external view returns (address[] memory) {
         return signers;
     }
 
+    /// @notice Retorna IDs de todas as propostas ativas (não executadas)
+    /// @return Array com IDs das propostas ativas
     function getActiveProposals() external view returns (uint256[] memory) {
         return activeProposalIds;
     }
 
+    /// @notice Retorna o número total de signatários
+    /// @return Quantidade de signatários
     function getSignerCount() external view returns (uint256) {
         return signers.length;
     }
 
+    /// @notice Retorna quantas vezes o caller interagiu com o contrato
+    /// @return Número de interações
     function myInteractions() external view returns (uint256) {
         return interactionsCount[msg.sender];
     }
