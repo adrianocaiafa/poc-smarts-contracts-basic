@@ -222,6 +222,55 @@ contract SimpleMultiSig {
         }
     }
 
+    function getProposal(uint256 _proposalId)
+        external
+        view
+        returns (
+            uint256 id,
+            address proposer,
+            address target,
+            uint256 value,
+            bool executed,
+            uint256 approvalCount,
+            bool canExecute
+        )
+    {
+        Proposal storage p = proposals[_proposalId];
+        return (
+            p.id,
+            p.proposer,
+            p.target,
+            p.value,
+            p.executed,
+            p.approvalCount,
+            !p.executed && p.approvalCount >= threshold
+        );
+    }
+
+    function hasApproved(uint256 _proposalId, address _signer)
+        external
+        view
+        returns (bool)
+    {
+        return proposals[_proposalId].approvals[_signer];
+    }
+
+    function getSigners() external view returns (address[] memory) {
+        return signers;
+    }
+
+    function getActiveProposals() external view returns (uint256[] memory) {
+        return activeProposalIds;
+    }
+
+    function getSignerCount() external view returns (uint256) {
+        return signers.length;
+    }
+
+    function myInteractions() external view returns (uint256) {
+        return interactionsCount[msg.sender];
+    }
+
     receive() external payable {}
 }
 
