@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 /// @title SimpleMultiSig
 /// @notice Sistema básico de múltiplas assinaturas (N-de-M)
+/// @notice Permite que ações sejam propostas e executadas apenas após N aprovações de M signatários
+/// @notice Útil para gerenciamento seguro de fundos ou configurações que requerem consenso
 contract SimpleMultiSig {
     address public owner;
     address[] public signers;
@@ -90,6 +92,8 @@ contract SimpleMultiSig {
     event ProposalExecuted(uint256 indexed proposalId, address indexed executor);
     event ProposalCancelled(uint256 indexed proposalId, address indexed canceller);
 
+    /// @notice Adiciona um novo signatário ao multi-sig
+    /// @param _signer Endereço do novo signatário
     function addSigner(address _signer) external onlyOwner {
         if (_signer == address(0)) revert NotASigner();
         if (isSigner[_signer]) revert AlreadySigner();
@@ -102,6 +106,9 @@ contract SimpleMultiSig {
         emit SignerAdded(_signer, signers.length, threshold);
     }
 
+    /// @notice Remove um signatário do multi-sig
+    /// @dev Requer que o threshold seja ajustado primeiro se necessário
+    /// @param _signer Endereço do signatário a remover
     function removeSigner(address _signer) external onlyOwner {
         if (!isSigner[_signer]) revert NotASigner();
         if (threshold > signers.length - 1) revert InvalidThreshold();
@@ -121,6 +128,8 @@ contract SimpleMultiSig {
         emit SignerRemoved(_signer, signers.length, threshold);
     }
 
+    /// @notice Ajusta o número mínimo de aprovações necessárias para executar propostas
+    /// @param _newThreshold Novo threshold (deve estar entre 1 e número de signatários)
     function setThreshold(uint256 _newThreshold) external onlyOwner {
         require(_newThreshold > 0 && _newThreshold <= signers.length, "Invalid threshold");
         
@@ -132,6 +141,11 @@ contract SimpleMultiSig {
         emit ThresholdChanged(oldThreshold, _newThreshold);
     }
 
+    /// @notice Cria uma nova proposta de ação
+    /// @param _target Endereço do contrato/alvo que receberá a chamada
+    /// @param _value Valor em wei a enviar (0 para chamadas sem valor)
+    /// @param _data Dados da chamada (pode ser vazio para transferências simples)
+    /// @return proposalId ID da proposta criada
     function propose(address _target, uint256 _value, bytes calldata _data) 
         external 
         onlySigner 
@@ -159,6 +173,8 @@ contract SimpleMultiSig {
         emit ProposalApproved(proposalId, msg.sender, 1);
     }
 
+    /// @notice Aprova uma proposta existente
+    /// @param _proposalId ID da proposta a aprovar
     function approve(uint256 _proposalId) external onlySigner {
         Proposal storage p = proposals[_proposalId];
         
@@ -174,6 +190,9 @@ contract SimpleMultiSig {
         emit ProposalApproved(_proposalId, msg.sender, p.approvalCount);
     }
 
+    /// @notice Executa uma proposta que atingiu o threshold de aprovações
+    /// @dev Pode ser chamado por qualquer endereço após atingir as aprovações necessárias
+    /// @param _proposalId ID da proposta a executar
     function execute(uint256 _proposalId) external {
         Proposal storage p = proposals[_proposalId];
         
@@ -193,6 +212,8 @@ contract SimpleMultiSig {
         emit ProposalExecuted(_proposalId, msg.sender);
     }
 
+    /// @notice Cancela uma proposta (apenas pelo proposer ou owner)
+    /// @param _proposalId ID da proposta a cancelar
     function cancel(uint256 _proposalId) external {
         Proposal storage p = proposals[_proposalId];
         
