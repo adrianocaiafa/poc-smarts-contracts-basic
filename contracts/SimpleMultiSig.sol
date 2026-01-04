@@ -159,6 +159,69 @@ contract SimpleMultiSig {
         emit ProposalApproved(proposalId, msg.sender, 1);
     }
 
+    function approve(uint256 _proposalId) external onlySigner {
+        Proposal storage p = proposals[_proposalId];
+        
+        if (p.id == 0) revert InvalidProposal();
+        if (p.executed) revert AlreadyExecuted();
+        if (p.approvals[msg.sender]) revert AlreadyApproved();
+        
+        p.approvals[msg.sender] = true;
+        p.approvalCount += 1;
+        
+        _registerInteraction(msg.sender);
+        
+        emit ProposalApproved(_proposalId, msg.sender, p.approvalCount);
+    }
+
+    function execute(uint256 _proposalId) external {
+        Proposal storage p = proposals[_proposalId];
+        
+        if (p.id == 0) revert InvalidProposal();
+        if (p.executed) revert AlreadyExecuted();
+        if (p.approvalCount < threshold) revert InsufficientApprovals();
+        
+        p.executed = true;
+        
+        _removeFromActiveProposals(_proposalId);
+        
+        (bool success, ) = p.target.call{value: p.value}(p.data);
+        if (!success) revert ExecutionFailed();
+        
+        _registerInteraction(msg.sender);
+        
+        emit ProposalExecuted(_proposalId, msg.sender);
+    }
+
+    function cancel(uint256 _proposalId) external {
+        Proposal storage p = proposals[_proposalId];
+        
+        if (p.id == 0) revert InvalidProposal();
+        if (p.executed) revert AlreadyExecuted();
+        
+        require(
+            msg.sender == p.proposer || msg.sender == owner,
+            "Not authorized to cancel"
+        );
+        
+        p.executed = true;
+        _removeFromActiveProposals(_proposalId);
+        
+        _registerInteraction(msg.sender);
+        
+        emit ProposalCancelled(_proposalId, msg.sender);
+    }
+
+    function _removeFromActiveProposals(uint256 _proposalId) internal {
+        for (uint256 i = 0; i < activeProposalIds.length; i++) {
+            if (activeProposalIds[i] == _proposalId) {
+                activeProposalIds[i] = activeProposalIds[activeProposalIds.length - 1];
+                activeProposalIds.pop();
+                break;
+            }
+        }
+    }
+
     receive() external payable {}
 }
 
