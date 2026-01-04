@@ -13,11 +13,33 @@ contract SimpleMultiSig {
     mapping(address => bool) public hasInteracted;
     mapping(address => uint256) public interactionsCount;
 
+    uint256 public proposalCount;
+    
+    struct Proposal {
+        uint256 id;
+        address proposer;
+        address target;
+        uint256 value;
+        bytes data;
+        bool executed;
+        uint256 approvalCount;
+        mapping(address => bool) approvals;
+    }
+    
+    mapping(uint256 => Proposal) public proposals;
+    uint256[] public activeProposalIds;
+
     error NotOwner();
     error NotSigner();
     error InvalidThreshold();
     error AlreadySigner();
     error NotASigner();
+    error InvalidProposal();
+    error AlreadyApproved();
+    error NotApproved();
+    error InsufficientApprovals();
+    error AlreadyExecuted();
+    error ExecutionFailed();
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert NotOwner();
@@ -58,6 +80,15 @@ contract SimpleMultiSig {
     event SignerAdded(address indexed signer, uint256 newSignerCount, uint256 threshold);
     event SignerRemoved(address indexed signer, uint256 newSignerCount, uint256 threshold);
     event ThresholdChanged(uint256 oldThreshold, uint256 newThreshold);
+    event ProposalCreated(
+        uint256 indexed proposalId,
+        address indexed proposer,
+        address target,
+        uint256 value
+    );
+    event ProposalApproved(uint256 indexed proposalId, address indexed approver, uint256 approvalCount);
+    event ProposalExecuted(uint256 indexed proposalId, address indexed executor);
+    event ProposalCancelled(uint256 indexed proposalId, address indexed canceller);
 
     function addSigner(address _signer) external onlyOwner {
         if (_signer == address(0)) revert NotASigner();
@@ -99,6 +130,33 @@ contract SimpleMultiSig {
         _registerInteraction(msg.sender);
         
         emit ThresholdChanged(oldThreshold, _newThreshold);
+    }
+
+    function propose(address _target, uint256 _value, bytes calldata _data) 
+        external 
+        onlySigner 
+        returns (uint256 proposalId) 
+    {
+        require(_target != address(0), "Invalid target");
+        
+        proposalId = ++proposalCount;
+        
+        Proposal storage p = proposals[proposalId];
+        p.id = proposalId;
+        p.proposer = msg.sender;
+        p.target = _target;
+        p.value = _value;
+        p.data = _data;
+        p.executed = false;
+        p.approvalCount = 1;
+        p.approvals[msg.sender] = true;
+        
+        activeProposalIds.push(proposalId);
+        
+        _registerInteraction(msg.sender);
+        
+        emit ProposalCreated(proposalId, msg.sender, _target, _value);
+        emit ProposalApproved(proposalId, msg.sender, 1);
     }
 
     receive() external payable {}
